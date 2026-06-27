@@ -1,5 +1,5 @@
 import { X } from 'lucide-react'
-import { useEffect, type ReactNode } from 'react'
+import { type ReactNode } from 'react'
 import { createPortal } from 'react-dom'
 import { cn } from '~/lib/cn'
 
@@ -13,7 +13,6 @@ type ModalLayoutProps = {
   labelledBy?: string
   describedBy?: string
 }
-
 export const ModalLayout = ({
   open,
   onClose,
@@ -24,23 +23,11 @@ export const ModalLayout = ({
   labelledBy,
   describedBy,
 }: ModalLayoutProps) => {
-  useEffect(() => {
-    if (!open) return
-
-    const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') onClose()
-    }
-
-    document.addEventListener('keydown', handleEscape)
-    document.body.style.overflow = 'hidden'
-
-    return () => {
-      document.removeEventListener('keydown', handleEscape)
-      document.body.style.overflow = ''
-    }
-  }, [open, onClose])
-
   if (!open) return null
+
+  const classes = panelClassName?.split(' ') || []
+  const maxWidthClass = classes.find((c) => c.startsWith('max-w-')) || 'max-w-md'
+  const otherPanelClasses = classes.filter((c) => !c.startsWith('max-w-')).join(' ')
 
   return createPortal(
     <div
@@ -48,7 +35,10 @@ export const ModalLayout = ({
       onClick={onClose}
       role="presentation"
     >
-      <div className="relative w-full max-w-md" onClick={(event) => event.stopPropagation()}>
+      <div
+        className={cn('relative w-full mx-auto', maxWidthClass)}
+        onClick={(event) => event.stopPropagation()}
+      >
         {showCloseButton && (
           <button
             type="button"
@@ -66,8 +56,8 @@ export const ModalLayout = ({
           aria-labelledby={labelledBy}
           aria-describedby={describedBy}
           className={cn(
-            'rounded-xl border border-border bg-bg-surface px-6 py-8 shadow-lg',
-            panelClassName,
+            'rounded-xl border border-border bg-bg-surface px-6 py-8 shadow-lg w-full',
+            otherPanelClasses,
           )}
         >
           {children}

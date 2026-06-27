@@ -5,6 +5,7 @@ import logo from '~/assets/logo.svg'
 import { ConfirmModal } from '~/components/ui/ConfirmModal'
 import { quickLinks } from '~/constants/links'
 import { cn } from '~/lib/cn'
+import { Button } from '../ui/Button'
 
 export const Header = () => {
   const [exitModalOpen, setExitModalOpen] = useState(false)
@@ -33,17 +34,12 @@ export const Header = () => {
               ))}
             </ul>
           </nav>
-
           {/*
-            <button
-                type="button"
-                onClick={() => setExitModalOpen(true)}
-                className="btn--ghost shrink-0 gap-2"
-            >
-                <LogOut className="h-4 w-4" />
-                Вихід
-            </button>
-            */}
+          <Button variant="ghost" onClick={() => setExitModalOpen(true)} className="shrink-0 gap-2">
+            <LogOut className="h-4 w-4" />
+            Вихід
+          </Button>
+          */}
         </div>
       </header>
 

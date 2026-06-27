@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { USE_MOCK_DATA } from '~/env'
 import { getErrorMessage } from '~/lib/formatApiError'
 import {
-  createMockStudyProgramsSource,
+  getMockProgramsSource,
   getMockStudyProgramsList,
 } from '~/services/mockStudyProgramsService'
 import { studyProgramsService } from '~/services/studyProgramsService'
@@ -39,30 +39,16 @@ function estimateTotalFromApiResponse(
 }
 
 export function useStudyPrograms(params?: StudyProgramsListParams): UseStudyProgramsResult {
-  const [mockSource, setMockSource] = useState<StudyProgramShortDto[]>(createMockStudyProgramsSource)
-  const initialMock = USE_MOCK_DATA ? getMockStudyProgramsList(mockSource, params) : null
-
-  const [studyPrograms, setStudyPrograms] = useState<StudyProgramShortDto[]>(
-    initialMock?.studyPrograms ?? [],
-  )
-  const [loading, setLoading] = useState(!USE_MOCK_DATA)
+  const [studyPrograms, setStudyPrograms] = useState<StudyProgramShortDto[]>([])
+  const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const [pagination, setPagination] = useState<StudyProgramsPagination | null>(
-    initialMock
-      ? {
-          page: initialMock.page,
-          pageRecords: initialMock.pageRecords,
-          pagesCount: initialMock.pagesCount,
-          total: initialMock.total,
-        }
-      : null,
-  )
+  const [pagination, setPagination] = useState<StudyProgramsPagination | null>(null)
 
   const refetch = useCallback(async () => {
     if (USE_MOCK_DATA) {
       setError(null)
 
-      const data = getMockStudyProgramsList(mockSource, params)
+      const data = getMockStudyProgramsList(getMockProgramsSource(), params)
 
       setStudyPrograms(data.studyPrograms)
       setPagination({
@@ -99,7 +85,7 @@ export function useStudyPrograms(params?: StudyProgramsListParams): UseStudyProg
     } finally {
       setLoading(false)
     }
-  }, [mockSource, params?.page, params?.pageRecords, params?.search])
+  }, [params?.page, params?.pageRecords, params?.search])
 
   useEffect(() => {
     void refetch()
@@ -107,11 +93,6 @@ export function useStudyPrograms(params?: StudyProgramsListParams): UseStudyProg
 
   const deleteStudyProgram = useCallback(
     async (id: number) => {
-      if (USE_MOCK_DATA) {
-        setMockSource((prev) => prev.filter((program) => program.id !== id))
-        return
-      }
-
       try {
         await studyProgramsService.delete(id)
         await refetch()

@@ -9,10 +9,17 @@ import { useMemo, useState } from 'react'
 
 const DEFAULT_PAGE_RECORDS = 20
 
+export type StudyProgramFormModalState =
+  | { mode: 'create' }
+  | { mode: 'edit'; programId: number }
+  | null
+
 export function useStudyProgramsPage() {
   const [search, setSearch] = useState('')
   const [page, setPage] = useState(1)
   const [pageRecords] = useState(DEFAULT_PAGE_RECORDS)
+  const [formModal, setFormModal] = useState<StudyProgramFormModalState>(null)
+  const [detailsProgramId, setDetailsProgramId] = useState<number | null>(null)
 
   const debouncedSearch = useDebouncedValue(search)
 
@@ -31,6 +38,8 @@ export function useStudyProgramsPage() {
   const rowActions = useMemo<StudyProgramRowActionHandlers>(
     () => ({
       ...defaultStudyProgramRowHandlers,
+      onView: (id) => setDetailsProgramId(id),
+      onEdit: (id) => setFormModal({ mode: 'edit', programId: id }),
       onDelete: (id) => {
         void deleteStudyProgram(id)
       },
@@ -61,6 +70,11 @@ export function useStudyProgramsPage() {
     rowActions,
     refetch,
     setPage,
+    formModal,
+    openCreateModal: () => setFormModal({ mode: 'create' }),
+    closeFormModal: () => setFormModal(null),
+    detailsProgramId,
+    closeDetailsModal: () => setDetailsProgramId(null),
     filters: {
       values: filterValues,
       onSearchChange: (value: string) => {

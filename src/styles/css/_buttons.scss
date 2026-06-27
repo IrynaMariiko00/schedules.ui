@@ -57,3 +57,18 @@
     background: var(--color-surface-muted);
   }
 }
+
+.btn--secondary-accent {
+  color: var(--color-accent-blue);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: 0.75rem;
+
+  &:hover:not(:disabled) {
+    background: rgba(37, 99, 235, 0.05);
+    border: 1px solid var(--color-border-strong);
+    color: var(--color-accent-indigo);
+  }
+}

@@ -1,5 +1,5 @@
-import { cn } from '~/lib/cn'
 import { ModalLayout } from '~/components/ui/ModalLayout'
+import { Button } from './Button'
 
 type ConfirmModalProps = {
   open: boolean
@@ -43,16 +43,17 @@ export const ConfirmModal = ({
       </div>
 
       <div className="mx-auto mt-8 grid w-full max-w-[14rem] grid-cols-2 gap-3">
-        <button type="button" onClick={onClose} className="btn--secondary w-full">
+        <Button variant="secondary" onClick={onClose} className="w-full">
           {cancelText}
-        </button>
-        <button
-          type="button"
+        </Button>
+
+        <Button
+          variant={variant === 'danger' ? 'danger' : 'primary'}
           onClick={onConfirm}
-          className={cn('w-full', variant === 'danger' ? 'btn--danger' : 'btn--primary')}
+          className="w-full"
         >
           {confirmText}
-        </button>
+        </Button>
       </div>
     </ModalLayout>
   )

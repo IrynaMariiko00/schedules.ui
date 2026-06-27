@@ -41,7 +41,7 @@ export function getScheduleRowActions(
 ): ScheduleRowMenuItem[] {
   return [
     {
-      label: 'Редагувати',
+      label: 'Переглянути та редагувати',
       icon: Pencil,
       onClick: () => handlers.onEdit(schedule.id),
     },

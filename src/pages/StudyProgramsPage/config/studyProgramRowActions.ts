@@ -1,7 +1,8 @@
-import { Pencil, Trash2, type LucideIcon } from 'lucide-react'
+import { Eye, Pencil, Trash2, type LucideIcon } from 'lucide-react'
 import type { StudyProgramShortDto } from '~/types/api/studyProgram'
 
 export type StudyProgramRowActionHandlers = {
+  onView: (id: number) => void
   onEdit: (id: number) => void
   onDelete: (id: number) => void
 }
@@ -15,6 +16,7 @@ export type StudyProgramRowMenuItem = {
 }
 
 export const defaultStudyProgramRowHandlers: StudyProgramRowActionHandlers = {
+  onView: (id) => console.log('view', id),
   onEdit: (id) => console.log('edit', id),
   onDelete: (id) => console.log('delete', id),
 }
@@ -24,6 +26,11 @@ export function getStudyProgramRowActions(
   handlers: StudyProgramRowActionHandlers = defaultStudyProgramRowHandlers,
 ): StudyProgramRowMenuItem[] {
   return [
+    {
+      label: 'Переглянути деталі',
+      icon: Eye,
+      onClick: () => handlers.onView(program.id),
+    },
     {
       label: 'Редагувати',
       icon: Pencil,

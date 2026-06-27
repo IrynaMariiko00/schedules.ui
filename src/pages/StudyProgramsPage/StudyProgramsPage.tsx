@@ -1,5 +1,9 @@
+import { Plus } from 'lucide-react'
+import { Button } from '~/components/ui/Button'
 import { ErrorAlert } from '~/components/ui/ErrorAlert'
 import { Pagination } from '~/components/ui/Pagination'
+import { StudyProgramDetailsModal } from '~/pages/StudyProgramsPage/components/StudyProgramDetailsModal/StudyProgramDetailsModal'
+import { StudyProgramModal } from '~/pages/StudyProgramsPage/components/StudyProgramModal/StudyProgramModal'
 import { StudyProgramsFilters } from '~/pages/StudyProgramsPage/components/StudyProgramsFilters'
 import { StudyProgramsTable } from '~/pages/StudyProgramsPage/components/StudyProgramsTable'
 import { useStudyProgramsPage } from '~/pages/StudyProgramsPage/hooks/useStudyProgramsPage'
@@ -14,14 +18,26 @@ function StudyProgramsPage() {
     rowActions,
     refetch,
     setPage,
+    formModal,
+    openCreateModal,
+    closeFormModal,
+    detailsProgramId,
+    closeDetailsModal,
     filters,
   } = useStudyProgramsPage()
 
   return (
     <main className="container-app py-8">
-      <div className="mb-6">
-        <h1 className="text-2xl font-semibold text-text">Довідник навчальних програм</h1>
-        <p className="mt-1 text-caption">Перегляд та керування навчальними програмами</p>
+      <div className="mb-6 flex justify-between">
+        <div>
+          <h1 className="text-2xl font-semibold text-text">Довідник навчальних програм</h1>
+          <p className="mt-1 text-caption">Перегляд та керування навчальними програмами</p>
+        </div>
+
+        <Button variant="secondary-accent" onClick={openCreateModal}>
+          <Plus className="h-4 w-4" />
+          Додати програму
+        </Button>
       </div>
 
       <div className="space-y-4">
@@ -56,6 +72,20 @@ function StudyProgramsPage() {
           </>
         )}
       </div>
+
+      <StudyProgramModal
+        open={formModal !== null}
+        mode={formModal?.mode ?? 'create'}
+        programId={formModal?.mode === 'edit' ? formModal.programId : undefined}
+        onClose={closeFormModal}
+        onSuccess={() => void refetch()}
+      />
+
+      <StudyProgramDetailsModal
+        open={detailsProgramId !== null}
+        programId={detailsProgramId}
+        onClose={closeDetailsModal}
+      />
     </main>
   )
 }

@@ -1,6 +1,11 @@
 import { MOCK_STUDY_PROGRAMS } from '~/constants/mockStudyPrograms'
+import { buildMockStudyProgramDetails } from '~/constants/mockStudyProgramDetails'
 import { filterStudyPrograms, paginateStudyPrograms } from '~/lib/studyProgramFilters'
-import type { StudyProgramShortDto, StudyProgramsListParams } from '~/types/api/studyProgram'
+import type {
+  StudyProgramDetailsDto,
+  StudyProgramShortDto,
+  StudyProgramsListParams,
+} from '~/types/api/studyProgram'
 
 const DEFAULT_PAGE_RECORDS = 20
 
@@ -12,7 +17,7 @@ export type MockStudyProgramsListResult = {
   total: number
 }
 
-export function createMockStudyProgramsSource(): StudyProgramShortDto[] {
+export function getMockProgramsSource(): StudyProgramShortDto[] {
   return MOCK_STUDY_PROGRAMS.map((program) => ({ ...program }))
 }
 
@@ -34,4 +39,11 @@ export function getMockStudyProgramsList(
     pagesCount: paginated.pagesCount,
     total: paginated.total,
   }
+}
+
+export function getMockStudyProgramById(id: number): StudyProgramDetailsDto | null {
+  const program = MOCK_STUDY_PROGRAMS.find((item) => item.id === id)
+  if (!program) return null
+
+  return buildMockStudyProgramDetails(id, program.name, program.hours)
 }

@@ -1,4 +1,5 @@
 import { CloudOff, RefreshCw } from 'lucide-react'
+import { Button } from './Button'
 
 type ErrorAlertProps = {
   title?: string
@@ -28,10 +29,10 @@ export const ErrorAlert = ({
         </p>
       </div>
       {onRetry && (
-        <button type="button" onClick={onRetry} className="btn--primary mt-8 gap-2">
+        <Button type="button" onClick={onRetry} variant="primary" className="mt-8 gap-2">
           <RefreshCw className="h-4 w-4" strokeWidth={2.25} />
           {retryLabel}
-        </button>
+        </Button>
       )}
     </div>
   )

@@ -18,6 +18,23 @@ export function formatDateToIso(date: Date): string {
   return `${year}-${month}-${day}`
 }
 
+export function formatDateToDisplay(date: Date): string {
+  const day = String(date.getDate()).padStart(2, '0')
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const year = date.getFullYear()
+  return `${day}.${month}.${year}`
+}
+
+export function toIsoDateString(value: string): string {
+  const fromDisplay = parseDisplayDate(value)
+  if (fromDisplay) return formatDateToIso(fromDisplay)
+
+  const fromIso = parseIsoDate(value)
+  if (fromIso) return formatDateToIso(fromIso)
+
+  return value
+}
+
 export function startOfDay(date: Date): Date {
   return new Date(date.getFullYear(), date.getMonth(), date.getDate())
 }

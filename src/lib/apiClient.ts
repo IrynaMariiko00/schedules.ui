@@ -30,16 +30,22 @@ async function parseResponseBody<T>(response: Response): Promise<T> {
 export async function apiClient<T>(path: string, options: RequestOptions = {}): Promise<T> {
   const { body, headers, ...rest } = options
 
+  const token = localStorage.getItem('token')
+
   const response = await fetch(`${API_BASE_URL}${path}`, {
     ...rest,
     headers: {
       ...(body !== undefined ? { 'Content-Type': 'application/json' } : {}),
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
       ...headers,
     },
     body: body !== undefined ? JSON.stringify(body) : undefined,
   })
 
   if (!response.ok) {
+    if (response.status === 401) {
+      window.dispatchEvent(new Event('auth:unauthorized'))
+    }
     const message = (await response.text()) || response.statusText
     throw new ApiError(response.status, message)
   }

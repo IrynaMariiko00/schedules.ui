@@ -3,6 +3,7 @@ import { Header } from '~/components/layout/Header'
 import HomePage from '~/pages/HomePage/HomePage'
 import StudyProgramsPage from '~/pages/StudyProgramsPage/StudyProgramsPage'
 import TeachersPage from '~/pages/TeachersPage'
+import { LoginOverlay } from '~/components/auth/LoginOverlay'
 
 export const App = () => {
   return (
@@ -13,6 +14,7 @@ export const App = () => {
         <Route path="/teachers" element={<TeachersPage />} />
         <Route path="/study-programs" element={<StudyProgramsPage />} />
       </Routes>
+      <LoginOverlay />
     </>
   )
 }

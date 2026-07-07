@@ -52,8 +52,8 @@ export type StudyProgramsListParams = {
 }
 
 export type StudyProgramsListResponse = {
-  studyPrograms: StudyProgramShortDto[]
+  items: StudyProgramShortDto[]
   page: number
   pageRecords: number
-  pagesCount: number
+  totalPages: number
 }

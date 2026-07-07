@@ -64,9 +64,4 @@ export const schedulesService = {
   getById(id: number) {
     return apiClient<ScheduleDto>(`/schedules/${id}`)
   },
-
-  /** Not documented in OpenAPI v1 — used by schedule details modal */
-  getLessons(scheduleId: number) {
-    return apiClient<LessonDto[]>(`/schedules/${scheduleId}/lessons`)
-  },
 }

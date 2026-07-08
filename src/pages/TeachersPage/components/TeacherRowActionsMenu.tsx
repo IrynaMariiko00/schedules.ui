@@ -90,9 +90,12 @@ export const TeacherRowActionsMenu = ({ teacher, actions }: TeacherRowActionsMen
                 <button
                   key={item.label}
                   type="button"
-                  onClick={() => handleItemClick(item.tone, item.onClick)}
+                  disabled={item.disabled}
+                  onClick={() => !item.disabled && handleItemClick(item.tone, item.onClick)}
                   className={cn(
-                    'flex w-full items-center gap-3 px-3 py-2 text-left text-sm transition-colors hover:bg-bg-muted',
+                    'flex w-full items-center gap-3 px-3 py-2 text-left text-sm transition-colors',
+                    !item.disabled && 'hover:bg-bg-muted',
+                    item.disabled && 'opacity-50 cursor-not-allowed',
                     item.tone === 'danger' ? 'text-rose-600' : 'text-text',
                   )}
                 >

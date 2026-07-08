@@ -1,6 +1,7 @@
 import { useEffect, useState, useMemo } from 'react'
 import { useToast } from '~/components/ui/toast/useToast'
 import { getErrorMessage } from '~/lib/formatApiError'
+import { getCurrentYear } from '~/lib/dateUtils'
 import { VALIDATION_REQUIRED_FIELDS } from '~/lib/validationMessages'
 import {
   normalizeTeacherStatus,
@@ -97,7 +98,7 @@ export const useTeacherForm = ({
         setPatronymic(data.patronymic)
         setTeachingLoads(loads)
         
-        const year = getTeachingLoadYear(latestLoad) ?? String(new Date().getFullYear())
+        const year = getTeachingLoadYear(latestLoad) ?? String(getCurrentYear())
         setSelectedYear(year)
         setHours(String(latestLoad?.hours ?? ''))
         

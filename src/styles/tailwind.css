@@ -303,27 +303,18 @@
 
   /* Toasts */
   .toast {
-    @apply pointer-events-auto flex w-full items-start gap-2 rounded-lg border-2 px-4 py-3 text-sm font-semibold;
-    box-shadow:
-      0 10px 25px rgba(17, 24, 39, 0.18),
-      0 4px 10px rgba(17, 24, 39, 0.1);
+    @apply pointer-events-auto flex w-full items-start gap-2 rounded-lg border px-4 py-3 text-sm font-semibold shadow-md;
   }
 
   .toast--success {
     border-color: var(--color-toast-success-border);
     background: var(--color-toast-success-bg);
     color: var(--color-toast-success-text);
-    box-shadow:
-      0 10px 25px rgba(21, 128, 61, 0.4),
-      0 4px 10px rgba(17, 24, 39, 0.12);
   }
 
   .toast--error {
     border-color: var(--color-toast-error-border);
     background: var(--color-toast-error-bg);
     color: var(--color-toast-error-text);
-    box-shadow:
-      0 10px 25px rgba(190, 18, 60, 0.4),
-      0 4px 10px rgba(17, 24, 39, 0.12);
   }
 }

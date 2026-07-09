@@ -1,5 +1,5 @@
 import { type FormEvent } from 'react'
-import { Loader2, Lock, User } from 'lucide-react'
+import { Eye, EyeOff, Loader2, Lock, User } from 'lucide-react'
 import { Button } from '~/ui/Button'
 import { FormErrorMessage } from '~/ui/FormErrorMessage'
 import { Input } from '~/ui/Input'
@@ -10,10 +10,12 @@ type LoginFormProps = {
     password: string
     error: string | null
     isLoading: boolean
+    isPasswordVisible: boolean
   }
   actions: {
     setUsername: (value: string) => void
     setPassword: (value: string) => void
+    togglePasswordVisibility: () => void
     submit: (event: FormEvent<HTMLFormElement>) => void
   }
 }
@@ -29,8 +31,6 @@ export const LoginForm = ({ state, actions }: LoginFormProps) => {
       </header>
 
       <form onSubmit={(event) => void actions.submit(event)} className="flex flex-col gap-5">
-        {state.error && <FormErrorMessage message={state.error} />}
-
         <Input
           label="Логін"
           type="text"
@@ -44,23 +44,35 @@ export const LoginForm = ({ state, actions }: LoginFormProps) => {
 
         <Input
           label="Пароль"
-          type="password"
+          type={state.isPasswordVisible ? 'text' : 'password'}
           value={state.password}
           onChange={(event) => actions.setPassword(event.target.value)}
           placeholder="••••••••"
           leadingIcon={<Lock size={18} />}
           clearable={false}
           required
+          trailingAction={
+            <button
+              type="button"
+              onClick={actions.togglePasswordVisibility}
+              className="inline-flex items-center pt-1 justify-center text-text-muted transition-colors hover:text-accent-indigo"
+              aria-label={state.isPasswordVisible ? 'Приховати пароль' : 'Показати пароль'}
+            >
+              {state.isPasswordVisible ? <EyeOff size={18} /> : <Eye size={18} />}
+            </button>
+          }
         />
-
         <Button
           type="submit"
           variant="primary"
-          className="mt-3 w-full h-[45px]"
+          className="mt-3 h-[45px] w-full"
           disabled={state.isLoading}
         >
           {state.isLoading ? <Loader2 className="h-5 w-5 animate-spin" /> : 'Увійти'}
         </Button>
+        {state.error && (
+          <FormErrorMessage message={state.error} className="border-none bg-transparent !p-0" />
+        )}
       </form>
     </div>
   )

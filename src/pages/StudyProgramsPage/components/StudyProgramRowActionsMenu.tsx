@@ -115,10 +115,7 @@ export const StudyProgramRowActionsMenu = ({
         description="Ви впевнені, що хочете видалити цю навчальну програму?"
         confirmText="Видалити"
         variant="danger"
-        onConfirm={() => {
-          actions?.onDelete(program.id)
-          setDeleteModalOpen(false)
-        }}
+        onConfirm={() => actions?.onDelete(program.id) ?? false}
         onClose={() => setDeleteModalOpen(false)}
       />
     </>

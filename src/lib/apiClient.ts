@@ -13,6 +13,7 @@ export class ApiError extends Error {
 
 type RequestOptions = Omit<RequestInit, 'body'> & {
   body?: unknown
+  suppressUnauthorizedEvent?: boolean
 }
 
 async function parseResponseBody<T>(response: Response): Promise<T> {
@@ -29,7 +30,7 @@ async function parseResponseBody<T>(response: Response): Promise<T> {
 }
 
 export async function apiClient<T>(path: string, options: RequestOptions = {}): Promise<T> {
-  const { body, headers, ...rest } = options
+  const { body, headers, suppressUnauthorizedEvent, ...rest } = options
 
   const token = tokenService.getToken()
 
@@ -44,7 +45,7 @@ export async function apiClient<T>(path: string, options: RequestOptions = {}): 
   })
 
   if (!response.ok) {
-    if (response.status === 401) {
+    if (response.status === 401 && !suppressUnauthorizedEvent) {
       window.dispatchEvent(new Event('auth:unauthorized'))
     }
     const message = (await response.text()) || response.statusText

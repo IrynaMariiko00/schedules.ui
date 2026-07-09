@@ -1,4 +1,6 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useState } from 'react'
+import { useModalGuard } from '~/contexts/ModalGuardContext'
+import { useAutoListFetch } from '~/hooks/useAutoListFetch'
 import { useToast } from '~/ui/toast/useToast'
 import { getErrorMessage } from '~/lib/formatApiError'
 import { estimateTotalFromApiResponse } from '~/lib/paginationUtils'
@@ -24,11 +26,12 @@ type UseSchedulesResult = {
   error: string | null
   pagination: SchedulesPagination | null
   refetch: (options?: RefetchOptions) => Promise<void>
-  deleteSchedule: (id: number) => Promise<void>
+  deleteSchedule: (id: number) => Promise<boolean>
 }
 
 export function useSchedules(params?: SchedulesListParams): UseSchedulesResult {
   const toast = useToast()
+  const { isModalOpen } = useModalGuard()
   const [schedules, setSchedules] = useState<Schedule[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -63,7 +66,9 @@ export function useSchedules(params?: SchedulesListParams): UseSchedulesResult {
         setSchedules([])
         setPagination(null)
       }
-      toast.error(message)
+      if (message) {
+        toast.error(message)
+      }
     } finally {
       if (!silent) {
         setLoading(false)
@@ -71,9 +76,11 @@ export function useSchedules(params?: SchedulesListParams): UseSchedulesResult {
     }
   }, [params?.endDate, params?.page, params?.pageRecords, params?.search, params?.startDate, toast])
 
-  useEffect(() => {
-    void refetch()
-  }, [refetch])
+  useAutoListFetch(
+    refetch,
+    [params?.endDate, params?.page, params?.pageRecords, params?.search, params?.startDate],
+    { pause: isModalOpen },
+  )
 
   const deleteSchedule = useCallback(
     async (id: number) => {
@@ -81,8 +88,10 @@ export function useSchedules(params?: SchedulesListParams): UseSchedulesResult {
         await schedulesService.delete(id)
         toast.success('Розклад видалено')
         await refetch()
+        return true
       } catch (err) {
         toast.error(getErrorMessage(err, 'Не вдалося видалити розклад'))
+        return false
       }
     },
     [refetch, toast],

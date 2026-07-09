@@ -2,6 +2,7 @@ import { Pencil, Save, X, Loader2 } from 'lucide-react'
 import { Button } from '~/ui/Button'
 import { FormErrorMessage } from '~/ui/FormErrorMessage'
 import { ModalLayout } from '~/ui/ModalLayout'
+import { useRegisterModalOpen } from '~/contexts/ModalGuardContext'
 import { Input } from '~/ui/Input'
 import { DatePicker } from '~/ui/DatePicker'
 import type { ScheduleDto } from '~/types/api/schedule'
@@ -17,6 +18,7 @@ type Props = {
 }
 
 export const ScheduleDetailsModal = ({ open, schedule, onClose, onUpdate }: Props) => {
+  useRegisterModalOpen(open)
   const {
     currentSchedule,
     lessons,

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { ModalLayout } from '~/ui/ModalLayout'
+import { useRegisterModalOpen } from '~/contexts/ModalGuardContext'
 import { useToast } from '~/ui/toast/useToast'
 import { getErrorMessage } from '~/lib/formatApiError'
 import { studyProgramsService } from '~/services/studyProgramsService'
@@ -18,6 +19,7 @@ export const StudyProgramDetailsModal = ({
   programId,
   onClose,
 }: StudyProgramDetailsModalProps) => {
+  useRegisterModalOpen(open)
   const toast = useToast()
   const [details, setDetails] = useState<StudyProgramDetailsDto | null>(null)
   const [loading, setLoading] = useState(false)

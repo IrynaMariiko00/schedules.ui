@@ -1,10 +1,11 @@
 import { Eye, Pencil, Trash2, type LucideIcon } from 'lucide-react'
+import type { ConfirmHandlerResult } from '~/ui/ConfirmModal'
 import type { StudyProgramShortDto } from '~/types/api/studyProgram'
 
 export type StudyProgramRowActionHandlers = {
   onView: (id: number) => void
   onEdit: (id: number) => void
-  onDelete: (id: number) => void
+  onDelete: (id: number) => ConfirmHandlerResult
 }
 
 export type StudyProgramRowMenuItem = {

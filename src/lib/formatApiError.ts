@@ -129,3 +129,33 @@ export function getErrorMessage(err: unknown, fallback: string): string {
 
   return fallback
 }
+
+const LOGIN_UNAUTHORIZED_FALLBACK = 'Невірний логін або пароль'
+
+function formatLoginApiErrorMessage(status: number, rawMessage: string): string {
+  if (isHtmlResponse(rawMessage)) {
+    return status === 401 ? LOGIN_UNAUTHORIZED_FALLBACK : getStatusMessage(status)
+  }
+
+  const jsonMessage = parseJsonMessage(rawMessage.trim())
+  const backendMessage = (jsonMessage ?? rawMessage).trim()
+
+  if (backendMessage && backendMessage.length <= 200 && !backendMessage.includes('<')) {
+    return backendMessage
+  }
+
+  return status === 401 ? LOGIN_UNAUTHORIZED_FALLBACK : getStatusMessage(status)
+}
+
+export function getLoginErrorMessage(err: unknown): string {
+  if (err instanceof Error && err.name === 'ApiError' && 'status' in err) {
+    const apiErr = err as Error & { status: number }
+    return formatLoginApiErrorMessage(apiErr.status, apiErr.message)
+  }
+
+  if (err instanceof TypeError) {
+    return 'Не вдалося підключитися до сервера.'
+  }
+
+  return 'Помилка входу. Перевірте свої дані.'
+}

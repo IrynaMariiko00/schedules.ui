@@ -112,10 +112,7 @@ export const TeacherRowActionsMenu = ({ teacher, actions }: TeacherRowActionsMen
         description="Ви впевнені, що хочете видалити цього викладача? Викладач буде деактивований."
         confirmText="Видалити"
         variant="danger"
-        onConfirm={() => {
-          actions?.onDelete(teacher.id)
-          setDeleteModalOpen(false)
-        }}
+        onConfirm={() => actions?.onDelete(teacher.id) ?? false}
         onClose={() => setDeleteModalOpen(false)}
       />
     </>

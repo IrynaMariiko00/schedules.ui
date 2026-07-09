@@ -1,4 +1,5 @@
 import { ModalLayout } from '~/ui/ModalLayout'
+import { useRegisterModalOpen } from '~/contexts/ModalGuardContext'
 import { FormErrorMessage } from '~/ui/FormErrorMessage'
 import { Input } from '~/ui/Input'
 import { DatePicker } from '~/ui/DatePicker'
@@ -15,6 +16,7 @@ type ScheduleModalProps = {
 }
 
 export const ScheduleModal = ({ open, onClose, onSuccess }: ScheduleModalProps) => {
+  useRegisterModalOpen(open)
   const { state, actions } = useScheduleForm({ open, onSuccess })
 
   const isBusy = state.isLoading || state.isLoadingPrograms

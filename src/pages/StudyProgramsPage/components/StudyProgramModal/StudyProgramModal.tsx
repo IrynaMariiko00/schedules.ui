@@ -2,6 +2,7 @@ import { DndContext, closestCenter } from '@dnd-kit/core'
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import { Plus } from 'lucide-react'
 import { ModalLayout } from '~/ui/ModalLayout'
+import { useRegisterModalOpen } from '~/contexts/ModalGuardContext'
 import { FormErrorMessage } from '~/ui/FormErrorMessage'
 import { Input } from '~/ui/Input'
 import { SortableSubjectRow } from './components/SortableSubjectRow'
@@ -23,6 +24,7 @@ export const StudyProgramModal = ({
   onClose,
   onSuccess,
 }: StudyProgramModalProps) => {
+  useRegisterModalOpen(open)
   const { state, actions } = useStudyProgramForm({
     open,
     mode,

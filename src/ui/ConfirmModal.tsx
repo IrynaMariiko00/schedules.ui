@@ -1,5 +1,9 @@
+import { Loader2 } from 'lucide-react'
+import { useEffect, useState } from 'react'
 import { ModalLayout } from '~/ui/ModalLayout'
 import { Button } from './Button'
+
+export type ConfirmHandlerResult = void | boolean | Promise<void | boolean>
 
 type ConfirmModalProps = {
   open: boolean
@@ -8,7 +12,7 @@ type ConfirmModalProps = {
   confirmText?: string
   cancelText?: string
   variant?: 'default' | 'danger'
-  onConfirm: () => void
+  onConfirm: () => ConfirmHandlerResult
   onClose: () => void
 }
 
@@ -25,12 +29,34 @@ export const ConfirmModal = ({
   onConfirm,
   onClose,
 }: ConfirmModalProps) => {
+  const [isConfirming, setIsConfirming] = useState(false)
   const confirmButtonVariant = variant === 'danger' ? 'danger' : 'primary'
+
+  useEffect(() => {
+    if (!open) {
+      setIsConfirming(false)
+    }
+  }, [open])
+
+  const handleConfirm = async () => {
+    if (isConfirming) return
+
+    setIsConfirming(true)
+
+    try {
+      const result = await onConfirm()
+      if (result !== false) {
+        onClose()
+      }
+    } finally {
+      setIsConfirming(false)
+    }
+  }
 
   return (
     <ModalLayout
       open={open}
-      onClose={onClose}
+      onClose={isConfirming ? () => undefined : onClose}
       labelledBy={TITLE_ID}
       describedBy={DESCRIPTION_ID}
       panelClassName="flex min-h-[12rem] flex-col justify-between"
@@ -45,12 +71,22 @@ export const ConfirmModal = ({
       </div>
 
       <div className="mx-auto mt-8 grid w-full max-w-[14rem] grid-cols-2 gap-3">
-        <Button variant="secondary" onClick={onClose} className="w-full">
+        <Button
+          variant="secondary"
+          onClick={onClose}
+          disabled={isConfirming}
+          className="w-full"
+        >
           {cancelText}
         </Button>
 
-        <Button variant={confirmButtonVariant} onClick={onConfirm} className="w-full">
-          {confirmText}
+        <Button
+          variant={confirmButtonVariant}
+          onClick={() => void handleConfirm()}
+          disabled={isConfirming}
+          className="w-full"
+        >
+          {isConfirming ? <Loader2 className="h-4 w-4 animate-spin" /> : confirmText}
         </Button>
       </div>
     </ModalLayout>

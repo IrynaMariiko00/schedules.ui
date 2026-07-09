@@ -1,4 +1,5 @@
 import { ModalLayout } from '~/ui/ModalLayout'
+import { useRegisterModalOpen } from '~/contexts/ModalGuardContext'
 import { FormErrorMessage } from '~/ui/FormErrorMessage'
 import { Input } from '~/ui/Input'
 import { Select } from '~/ui/Select'
@@ -25,6 +26,7 @@ export const TeacherModal = ({
   onClose,
   onSuccess,
 }: TeacherModalProps) => {
+  useRegisterModalOpen(open)
   const { state, actions } = useTeacherForm({
     open,
     mode,

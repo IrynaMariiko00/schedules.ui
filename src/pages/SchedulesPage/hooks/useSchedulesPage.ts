@@ -36,9 +36,7 @@ export function useSchedulesPage() {
   const rowActions = useMemo<ScheduleRowActionHandlers>(
     () => ({
       ...defaultScheduleRowHandlers,
-      onDelete: (id) => {
-        void deleteSchedule(id)
-      },
+      onDelete: (id) => deleteSchedule(id),
     }),
     [deleteSchedule],
   )

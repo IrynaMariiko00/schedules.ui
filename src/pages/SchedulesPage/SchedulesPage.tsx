@@ -1,4 +1,4 @@
-import { Plus } from 'lucide-react'
+import { Loader2, Plus } from 'lucide-react'
 import { Button } from '~/ui/Button'
 import { ErrorAlert } from '~/ui/ErrorAlert'
 import { Pagination } from '~/ui/Pagination'
@@ -38,23 +38,26 @@ function SchedulesPage() {
       </div>
 
       <div className="space-y-4">
-        {loading && (
-          <p className="rounded-xl border border-border bg-bg-surface px-4 py-8 text-center text-text-secondary">
-            Завантаження розкладів...
-          </p>
-        )}
+        {error && <ErrorAlert message={error} onRetry={() => void refetch()} />}
 
-        {!loading && error && <ErrorAlert message={error} onRetry={() => void refetch()} />}
-
-        {!loading && !error && (
+        {!error && (
           <>
             <SchedulesFilters {...filters} />
 
-            <SchedulesTable
-              schedules={schedules}
-              rowActions={rowActions}
-              onScheduleUpdated={() => void refetch({ silent: true })}
-            />
+            <div className="relative">
+              <SchedulesTable
+                schedules={schedules}
+                rowActions={rowActions}
+                onScheduleUpdated={() => void refetch({ silent: true })}
+              />
+
+              {loading && (
+                <div className="absolute inset-0 z-10 flex items-center justify-center gap-2 rounded-xl bg-bg-surface/80 text-sm text-text-secondary backdrop-blur-[1px]">
+                  <Loader2 className="h-5 w-5 animate-spin" />
+                  Завантаження розкладів...
+                </div>
+              )}
+            </div>
 
             {(pagination?.pagesCount ?? 0) > 1 || rangeLabel ? (
               <div className="flex flex-col items-center gap-3 sm:flex-row sm:justify-between">
@@ -77,7 +80,10 @@ function SchedulesPage() {
       <ScheduleModal
         open={isCreateModalOpen}
         onClose={closeCreateModal}
-        onSuccess={() => void refetch()}
+        onSuccess={() => {
+          closeCreateModal()
+          void refetch()
+        }}
       />
     </main>
   )

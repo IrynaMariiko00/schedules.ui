@@ -6,15 +6,18 @@ import '~/styles/tailwind.css'
 import '~/styles/main.scss'
 import { App } from '~/App'
 import { AuthProvider } from '~/contexts/AuthContext'
+import { ModalGuardProvider } from '~/contexts/ModalGuardContext'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <AuthProvider>
-      <BrowserRouter>
-      <ToastProvider>
-          <App />
-      </ToastProvider>
-      </BrowserRouter>
+      <ModalGuardProvider>
+        <BrowserRouter>
+          <ToastProvider>
+            <App />
+          </ToastProvider>
+        </BrowserRouter>
+      </ModalGuardProvider>
     </AuthProvider>
   </StrictMode>,
 )

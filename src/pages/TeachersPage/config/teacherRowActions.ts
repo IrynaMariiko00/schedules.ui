@@ -1,9 +1,10 @@
 import { Pencil, Trash2, type LucideIcon } from 'lucide-react'
+import type { ConfirmHandlerResult } from '~/ui/ConfirmModal'
 import type { TeacherItemDto } from '~/types/api/teacher'
 
 export type TeacherRowActionHandlers = {
   onEdit: (teacher: TeacherItemDto) => void
-  onDelete: (id: number) => void
+  onDelete: (id: number) => ConfirmHandlerResult
 }
 
 export type TeacherRowMenuItem = {

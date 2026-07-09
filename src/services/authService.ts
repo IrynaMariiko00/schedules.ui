@@ -8,6 +8,7 @@ export const authService = {
     const response = await apiClient<AuthResponseDto>('/Auth/login', {
       method: 'POST',
       body: payload,
+      suppressUnauthorizedEvent: true,
     })
     tokenService.setToken(response.token)
     return response

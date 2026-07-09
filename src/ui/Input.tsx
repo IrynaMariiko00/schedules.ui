@@ -6,6 +6,7 @@ type InputProps = InputHTMLAttributes<HTMLInputElement> & {
   label?: string
   wrapperClassName?: string
   leadingIcon?: ReactNode
+  trailingAction?: ReactNode
   clearable?: boolean
 }
 
@@ -13,6 +14,7 @@ export const Input = ({
   label,
   wrapperClassName,
   leadingIcon,
+  trailingAction,
   clearable = true,
   className,
   id,
@@ -23,8 +25,9 @@ export const Input = ({
 }: InputProps) => {
   const inputId = id ?? label?.toLowerCase().replace(/\s+/g, '-')
   const hasValue = String(value ?? defaultValue ?? '').length > 0
-  const showClear = clearable && hasValue
+  const showClear = clearable && hasValue && !trailingAction
   const showLeadingIcon = Boolean(leadingIcon) && !showClear
+  const showTrailingAction = Boolean(trailingAction)
 
   const handleClear = () => {
     onChange?.({ target: { value: '' } } as ChangeEvent<HTMLInputElement>)
@@ -50,9 +53,20 @@ export const Input = ({
           value={value}
           defaultValue={defaultValue}
           onChange={onChange}
-          className={cn('field-input', showLeadingIcon && 'pl-9', showClear && 'pr-9', className)}
+          className={cn(
+            'field-input',
+            showLeadingIcon && 'pl-9',
+            (showClear || showTrailingAction) && 'pr-9',
+            className,
+          )}
           {...props}
         />
+
+        {showTrailingAction && (
+          <span className="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted">
+            {trailingAction}
+          </span>
+        )}
 
         {showClear && (
           <FieldClearButton

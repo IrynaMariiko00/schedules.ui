@@ -49,7 +49,7 @@ export const Header = () => {
         description="Ви точно бажаєте вийти?"
         confirmText="Вийти"
         variant="danger"
-        onConfirm={() => void logout(() => setExitModalOpen(false))}
+        onConfirm={() => logout()}
         onClose={() => setExitModalOpen(false)}
       />
     </>

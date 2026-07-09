@@ -1,4 +1,6 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useState } from 'react'
+import { useModalGuard } from '~/contexts/ModalGuardContext'
+import { useAutoListFetch } from '~/hooks/useAutoListFetch'
 import { useToast } from '~/ui/toast/useToast'
 import { getErrorMessage } from '~/lib/formatApiError'
 import { estimateTotalFromApiResponse } from '~/lib/paginationUtils'
@@ -21,11 +23,12 @@ type UseStudyProgramsResult = {
   error: string | null
   pagination: StudyProgramsPagination | null
   refetch: () => Promise<void>
-  deleteStudyProgram: (id: number) => Promise<void>
+  deleteStudyProgram: (id: number) => Promise<boolean>
 }
 
 export function useStudyPrograms(params?: StudyProgramsListParams): UseStudyProgramsResult {
   const toast = useToast()
+  const { isModalOpen } = useModalGuard()
   const [studyPrograms, setStudyPrograms] = useState<StudyProgramShortDto[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -52,7 +55,9 @@ export function useStudyPrograms(params?: StudyProgramsListParams): UseStudyProg
     } catch (err) {
       const message = getErrorMessage(err, 'Не вдалося завантажити навчальні програми')
       setError(message)
-      toast.error(message)
+      if (message) {
+        toast.error(message)
+      }
       setStudyPrograms([])
       setPagination(null)
     } finally {
@@ -60,9 +65,9 @@ export function useStudyPrograms(params?: StudyProgramsListParams): UseStudyProg
     }
   }, [params?.page, params?.pageRecords, params?.search, toast])
 
-  useEffect(() => {
-    void refetch()
-  }, [refetch])
+  useAutoListFetch(refetch, [params?.page, params?.pageRecords, params?.search], {
+    pause: isModalOpen,
+  })
 
   const deleteStudyProgram = useCallback(
     async (id: number) => {
@@ -70,8 +75,10 @@ export function useStudyPrograms(params?: StudyProgramsListParams): UseStudyProg
         await studyProgramsService.delete(id)
         toast.success('Програму видалено')
         await refetch()
+        return true
       } catch (err) {
         toast.error(getErrorMessage(err, 'Не вдалося видалити навчальну програму'))
+        return false
       }
     },
     [refetch, toast],

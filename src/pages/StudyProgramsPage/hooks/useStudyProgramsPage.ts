@@ -40,9 +40,7 @@ export function useStudyProgramsPage() {
       ...defaultStudyProgramRowHandlers,
       onView: (id) => setDetailsProgramId(id),
       onEdit: (id) => setFormModal({ mode: 'edit', programId: id }),
-      onDelete: (id) => {
-        void deleteStudyProgram(id)
-      },
+      onDelete: (id) => deleteStudyProgram(id),
     }),
     [deleteStudyProgram],
   )

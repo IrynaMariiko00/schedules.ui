@@ -1,6 +1,7 @@
 import { useEffect, useState, type FormEvent } from 'react'
 import { useAuth } from '~/contexts/AuthContext'
-import { getErrorMessage } from '~/lib/formatApiError'
+import { getLoginErrorMessage } from '~/lib/formatApiError'
+import { dispatchAuthLogin } from '~/lib/authEvents'
 import { authService } from '~/services/authService'
 import { useToast } from '~/ui/toast/useToast'
 
@@ -15,6 +16,7 @@ export const useLoginForm = ({ open }: UseLoginFormOptions) => {
   const [password, setPassword] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false)
 
   useEffect(() => {
     if (!open) return
@@ -22,7 +24,18 @@ export const useLoginForm = ({ open }: UseLoginFormOptions) => {
     setUsername('')
     setPassword('')
     setError(null)
+    setIsPasswordVisible(false)
   }, [open])
+
+  const handleUsernameChange = (value: string) => {
+    setUsername(value)
+    if (error) setError(null)
+  }
+
+  const handlePasswordChange = (value: string) => {
+    setPassword(value)
+    if (error) setError(null)
+  }
 
   const submit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -32,9 +45,10 @@ export const useLoginForm = ({ open }: UseLoginFormOptions) => {
     try {
       await authService.login({ username, password })
       closeLoginModal()
+      dispatchAuthLogin()
       toast.success('Успішний вхід')
     } catch (err) {
-      setError(getErrorMessage(err, 'Помилка входу. Перевірте свої дані.'))
+      setError(getLoginErrorMessage(err))
     } finally {
       setIsLoading(false)
     }
@@ -46,10 +60,12 @@ export const useLoginForm = ({ open }: UseLoginFormOptions) => {
       password,
       error,
       isLoading,
+      isPasswordVisible,
     },
     actions: {
-      setUsername,
-      setPassword,
+      setUsername: handleUsernameChange,
+      setPassword: handlePasswordChange,
+      togglePasswordVisibility: () => setIsPasswordVisible((prev) => !prev),
       submit,
     },
   }

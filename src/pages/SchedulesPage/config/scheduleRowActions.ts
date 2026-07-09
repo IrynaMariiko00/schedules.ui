@@ -1,4 +1,5 @@
 import { Pencil, Trash2, type LucideIcon } from 'lucide-react'
+import type { ConfirmHandlerResult } from '~/ui/ConfirmModal'
 import type { Schedule } from '~/types/schedule'
 
 export type ScheduleRowActionHandlers = {
@@ -7,7 +8,7 @@ export type ScheduleRowActionHandlers = {
   onToggleBlock: (id: number) => void
   onTemplate: (id: number) => void
   onExport: (id: number) => void
-  onDelete: (id: number) => void
+  onDelete: (id: number) => ConfirmHandlerResult
 }
 
 export type ScheduleRowMenuItem = {

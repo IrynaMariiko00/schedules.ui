@@ -89,10 +89,7 @@ export const RowActionsMenu = ({
         title="Видалення"
         description="Видалити цей розклад?"
         variant="danger"
-        onConfirm={() => {
-          actions?.onDelete(schedule.id)
-          setDeleteModalOpen(false)
-        }}
+        onConfirm={() => actions?.onDelete(schedule.id) ?? false}
         onClose={() => setDeleteModalOpen(false)}
       />
     </>

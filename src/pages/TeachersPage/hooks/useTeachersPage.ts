@@ -41,9 +41,7 @@ export function useTeachersPage() {
       ...defaultTeacherRowHandlers,
       onEdit: (teacher: TeacherListItemDto) =>
         setFormModal({ mode: 'edit', teacherId: teacher.id, status: teacher.status }),
-      onDelete: (id) => {
-        void deactivateTeacher(id)
-      },
+      onDelete: (id) => deactivateTeacher(id),
     }),
     [deactivateTeacher],
   )

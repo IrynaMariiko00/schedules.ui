@@ -1,6 +1,5 @@
 import { apiClient } from '~/lib/apiClient'
 import { buildApiListQuery } from '~/lib/buildApiQuery'
-import type { LessonDto } from '~/types/api/lesson'
 import type {
   CreateScheduleDto,
   ScheduleDto,

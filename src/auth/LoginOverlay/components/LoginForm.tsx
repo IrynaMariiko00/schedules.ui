@@ -1,8 +1,8 @@
 import { type FormEvent } from 'react'
 import { Loader2, Lock, User } from 'lucide-react'
-import { Button } from '~/components/ui/Button'
-import { FormErrorMessage } from '~/components/ui/FormErrorMessage'
-import { Input } from '~/components/ui/Input'
+import { Button } from '~/ui/Button'
+import { FormErrorMessage } from '~/ui/FormErrorMessage'
+import { Input } from '~/ui/Input'
 
 type LoginFormProps = {
   state: {
@@ -22,7 +22,9 @@ export const LoginForm = ({ state, actions }: LoginFormProps) => {
   return (
     <div className="p-8">
       <header className="mb-8">
-        <h2 id="login-title" className="text-2xl font-bold text-text">З поверненням</h2>
+        <h2 id="login-title" className="text-2xl font-bold text-text">
+          З поверненням
+        </h2>
         <p className="mt-1 text-sm text-text-secondary">Будь ласка, увійдіть, щоб продовжити</p>
       </header>
 
@@ -51,12 +53,7 @@ export const LoginForm = ({ state, actions }: LoginFormProps) => {
           required
         />
 
-        <Button
-          type="submit"
-          variant="primary"
-          className="mt-3 w-full"
-          disabled={state.isLoading}
-        >
+        <Button type="submit" variant="primary" className="mt-3 w-full" disabled={state.isLoading}>
           {state.isLoading ? <Loader2 className="h-5 w-5 animate-spin" /> : 'Увійти'}
         </Button>
       </form>

@@ -53,7 +53,7 @@ export const useScheduleForm = ({ open, onSuccess }: UseScheduleFormOptions) => 
       try {
         const data = await studyProgramsService.getList({ page: 1, pageRecords: 100 })
         setStudyProgramOptions(
-          data.studyPrograms.map((program) => ({
+          data.items.map((program) => ({
             value: String(program.id),
             label: program.name,
           })),

@@ -1,8 +1,8 @@
 import { useEffect, useState, type FormEvent } from 'react'
-import { useToast } from '~/components/ui/toast/useToast'
 import { useAuth } from '~/contexts/AuthContext'
 import { getErrorMessage } from '~/lib/formatApiError'
 import { authService } from '~/services/authService'
+import { useToast } from '~/ui/toast/useToast'
 
 type UseLoginFormOptions = {
   open: boolean

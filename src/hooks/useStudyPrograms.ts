@@ -37,16 +37,16 @@ export function useStudyPrograms(params?: StudyProgramsListParams): UseStudyProg
 
     try {
       const data = await studyProgramsService.getList(params)
-      setStudyPrograms(data.studyPrograms)
+      setStudyPrograms(data.items)
       setPagination({
         page: data.page,
         pageRecords: data.pageRecords,
-        pagesCount: data.pagesCount,
+        pagesCount: data.totalPages,
         total: estimateTotalFromApiResponse(
           data.page,
           data.pageRecords,
-          data.pagesCount,
-          data.studyPrograms.length,
+          data.totalPages,
+          data.items.length,
         ),
       })
     } catch (err) {

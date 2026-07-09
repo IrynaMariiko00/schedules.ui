@@ -1,3 +1,5 @@
+import type { LessonDto } from './lesson'
+
 export type ScheduleDto = {
   id: number
   startDate: string
@@ -6,8 +8,8 @@ export type ScheduleDto = {
   status: string
   studyProgramId: number
   studyProgramName: string
+  lessons?: LessonDto[]
 }
-
 export type SchedulesListParams = {
   search?: string
   page?: number

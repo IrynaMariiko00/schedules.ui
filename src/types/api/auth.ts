@@ -3,6 +3,11 @@ export interface LoginDto {
   password: string;
 }
 
+export interface RegisterRequest {
+  username: string;
+  password: string;
+}
+
 export interface AuthResponseDto {
   token: string;
 }

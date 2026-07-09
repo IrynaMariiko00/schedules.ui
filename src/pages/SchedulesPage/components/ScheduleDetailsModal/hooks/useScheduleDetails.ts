@@ -94,9 +94,10 @@ export const useScheduleDetails = ({ open, schedule, onUpdate }: Props) => {
       setLoading(true)
       try {
         resetForm(currentSchedule)
-        const data = await schedulesService.getLessons(scheduleId)
-        setLessons(data)
-        setInitialLessons(data)
+        const data = await schedulesService.getById(scheduleId)
+        const loadedLessons = data.lessons || []
+        setLessons(loadedLessons)
+        setInitialLessons(loadedLessons)
       } catch (err) {
         toast.error(getErrorMessage(err, 'Не вдалося завантажити деталі розкладу'))
       } finally {

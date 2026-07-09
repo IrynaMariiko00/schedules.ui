@@ -1,5 +1,5 @@
 import { useEffect, useState, useMemo } from 'react'
-import { useToast } from '~/components/ui/toast/useToast'
+import { useToast } from '~/ui/toast/useToast'
 import { getErrorMessage } from '~/lib/formatApiError'
 import { getCurrentYear } from '~/lib/dateUtils'
 import { VALIDATION_REQUIRED_FIELDS } from '~/lib/validationMessages'

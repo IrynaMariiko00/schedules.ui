@@ -29,12 +29,13 @@ export const TEACHER_TABLE_COLUMNS: TeacherTableColumn[] = [
     headerClassName: 'min-w-[280px] px-4 py-3 font-semibold',
     cellClassName: 'px-4 py-3 leading-snug',
   },
-  {
-    key: 'status',
-    label: 'Статус',
-    headerClassName: 'w-36 whitespace-nowrap px-4 py-3 font-semibold',
-    cellClassName: 'whitespace-nowrap px-4 py-3',
-  },
+  // TODO: увімкнути, коли бекенд підтримує status
+  // {
+  //   key: 'status',
+  //   label: 'Статус',
+  //   headerClassName: 'w-36 whitespace-nowrap px-4 py-3 font-semibold',
+  //   cellClassName: 'whitespace-nowrap px-4 py-3',
+  // },
   {
     key: 'loadHours',
     label: `Годин на ${currentYear} рік`,

@@ -2,7 +2,7 @@ import { TableHeader } from '~/ui/TableHeader'
 import { DataTable } from '~/ui/DataTable'
 import { cn } from '~/lib/cn'
 import { TeacherRowActionsMenu } from '~/pages/TeachersPage/components/TeacherRowActionsMenu'
-import { TeacherStatusBadge } from '~/pages/TeachersPage/components/TeacherStatusBadge'
+// import { TeacherStatusBadge } from '~/pages/TeachersPage/components/TeacherStatusBadge'
 import {
   TEACHER_TABLE_COLUMNS,
   type TeacherTableColumnKey,
@@ -26,8 +26,8 @@ function renderCell(
       return index + 1
     case 'displayName':
       return teacher.displayName
-    case 'status':
-      return <TeacherStatusBadge status={teacher.status} />
+    // case 'status':
+    //   return <TeacherStatusBadge status={teacher.status} />
     case 'loadHours':
       return teacher.loadHours
     case 'actions':

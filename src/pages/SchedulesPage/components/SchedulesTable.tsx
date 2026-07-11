@@ -47,19 +47,15 @@ export const SchedulesTable = ({
               </tr>
             ) : (
               schedules.map((schedule, index) => {
-                const inactive = schedule.status === 'неактивний'
+                // const inactive = schedule.status === 'неактивний'
 
                 return (
                   <tr
                     key={schedule.id}
                     className={cn(
                       'border-b border-border transition-colors last:border-b-0',
-                      inactive
-                        ? 'bg-bg-muted/60 text-text-muted'
-                        : index % 2 === 0
-                          ? 'bg-bg-surface'
-                          : 'bg-bg-muted/30',
-                      !inactive && 'hover:bg-accent-indigo/5',
+                      index % 2 === 0 ? 'bg-bg-surface' : 'bg-bg-muted/30',
+                      'hover:bg-accent-indigo/5',
                     )}
                   >
                     {SCHEDULE_TABLE_COLUMNS.map((column) => (

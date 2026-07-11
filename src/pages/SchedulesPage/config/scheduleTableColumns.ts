@@ -21,12 +21,13 @@ export const SCHEDULE_TABLE_COLUMNS: ScheduleTableColumn[] = [
     headerClassName: 'whitespace-nowrap px-4 py-3 font-semibold',
     cellClassName: 'whitespace-nowrap px-4 py-3 font-medium',
   },
-  {
-    key: 'status',
-    label: 'Статус',
-    headerClassName: 'whitespace-nowrap px-4 py-3 font-semibold',
-    cellClassName: 'whitespace-nowrap px-4 py-3',
-  },
+  // TODO: увімкнути, коли бекенд підтримує status
+  // {
+  //   key: 'status',
+  //   label: 'Статус',
+  //   headerClassName: 'whitespace-nowrap px-4 py-3 font-semibold',
+  //   cellClassName: 'whitespace-nowrap px-4 py-3',
+  // },
   {
     key: 'group',
     label: 'Група №',

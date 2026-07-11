@@ -3,6 +3,7 @@ import { useModalGuard } from '~/contexts/ModalGuardContext'
 import { useAutoListFetch } from '~/hooks/useAutoListFetch'
 import { useToast } from '~/ui/toast/useToast'
 import { getErrorMessage } from '~/lib/formatApiError'
+import { toApiNumber } from '~/lib/lessonDateUtils'
 import { estimateTotalFromApiResponse } from '~/lib/paginationUtils'
 import {
   normalizeTeacherStatus,
@@ -31,6 +32,8 @@ function normalizeTeacherItem(item: TeacherListItemDto): TeacherListItemDto {
   return {
     ...item,
     status: normalizeTeacherStatus(item.status),
+    loadHours: toApiNumber(item.loadHours),
+    availableHours: toApiNumber(item.availableHours),
   }
 }
 

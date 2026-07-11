@@ -28,7 +28,7 @@ function StudyProgramsPage() {
 
   return (
     <main className="container-app py-8">
-      <div className="mb-6 flex justify-between">
+      <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div>
           <h1 className="text-2xl font-semibold text-text">Довідник навчальних програм</h1>
           <p className="mt-1 text-caption">Перегляд та керування навчальними програмами</p>

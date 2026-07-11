@@ -7,6 +7,9 @@ import { studyProgramsService } from '~/services/studyProgramsService'
 import type { StudyProgramDetailsDto } from '~/types/api/studyProgram'
 import { StudyProgramSubjectsTable } from './components/StudyProgramSubjectsTable'
 import { Button } from '~/ui/Button'
+import { ModalFooter } from '~/ui/modal/ModalFooter'
+import { ModalHeader } from '~/ui/modal/ModalHeader'
+import { ModalScrollBody } from '~/ui/modal/ModalScrollBody'
 
 type StudyProgramDetailsModalProps = {
   open: boolean
@@ -52,28 +55,26 @@ export const StudyProgramDetailsModal = ({
   }, [open, programId, toast])
 
   return (
-    <ModalLayout
-      open={open}
-      onClose={onClose}
-      panelClassName="max-w-4xl max-h-[90vh] overflow-y-auto"
-    >
-      <div className="flex flex-col gap-6">
-        <header className="sticky top-0 bg-bg-surface">
-          <h2 className="text-2xl font-bold text-text">Деталі навчальної програми</h2>
-          {details && <p className="mt-1 text-text-secondary">{details.name}</p>}
-        </header>
+    <ModalLayout open={open} onClose={onClose} panelClassName="max-w-4xl modal-form-panel">
+      <div className="flex min-h-0 flex-1 flex-col">
+        <ModalHeader
+          title="Деталі навчальної програми"
+          description={details?.name}
+        />
 
-        {loading && (
-          <p className="py-8 text-center text-text-secondary">Завантаження деталей програми...</p>
-        )}
+        <ModalScrollBody>
+          {loading && (
+            <p className="py-8 text-center text-text-secondary">Завантаження деталей програми...</p>
+          )}
 
-        {!loading && details && <StudyProgramSubjectsTable subjects={details.subjects} />}
+          {!loading && details && <StudyProgramSubjectsTable subjects={details.subjects} />}
+        </ModalScrollBody>
 
-        <footer className="flex justify-end sticky bottom-0 bg-bg-surface">
+        <ModalFooter>
           <Button type="button" onClick={onClose} variant="primary" className="px-8">
             Закрити
           </Button>
-        </footer>
+        </ModalFooter>
       </div>
     </ModalLayout>
   )

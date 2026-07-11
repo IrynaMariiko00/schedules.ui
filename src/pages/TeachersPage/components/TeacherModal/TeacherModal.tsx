@@ -4,8 +4,10 @@ import { FormErrorMessage } from '~/ui/FormErrorMessage'
 import { Input } from '~/ui/Input'
 import { Select } from '~/ui/Select'
 import { Combobox } from '~/ui/Combobox/Combobox'
-import { Button } from '~/ui/Button'
 import { useTeacherForm } from './hooks/useTeacherForm'
+import { ModalFormFooter } from '~/ui/modal/ModalFormFooter'
+import { ModalHeader } from '~/ui/modal/ModalHeader'
+import { ModalScrollBody } from '~/ui/modal/ModalScrollBody'
 
 import type { TeacherStatus } from '~/types/api/teacher'
 
@@ -36,96 +38,89 @@ export const TeacherModal = ({
   })
 
   const isEdit = mode === 'edit'
-  const isBusy = state.isLoading || state.isLoadingDetails
 
   return (
-    <ModalLayout open={open} onClose={onClose} panelClassName="max-w-2xl">
+    <ModalLayout open={open} onClose={onClose} panelClassName="max-w-2xl modal-form-panel">
       <form
         onSubmit={(event) => {
           event.preventDefault()
           void actions.submit()
         }}
-        className="flex flex-col gap-6"
+        className="flex min-h-0 flex-1 flex-col"
       >
-        <header>
-          <h2 className="text-2xl font-bold text-text">
-            {isEdit ? 'Редагування викладача' : 'Новий викладач'}
-          </h2>
-          <p className="mt-1 text-text-secondary">
-            {isEdit
+        <ModalHeader
+          title={isEdit ? 'Редагування викладача' : 'Новий викладач'}
+          description={
+            isEdit
               ? 'Оновіть особисті дані, статус та навантаження викладача'
-              : 'Заповніть дані нового викладача'}
-          </p>
-        </header>
+              : 'Заповніть дані нового викладача'
+          }
+        />
 
-        {state.isLoadingDetails ? (
-          <p className="py-8 text-center text-text-secondary">Завантаження даних викладача...</p>
-        ) : (
-          <div className="grid gap-4 sm:grid-cols-2">
-            <Input
-              label="Прізвище"
-              value={state.lastName}
-              onChange={(event) => actions.setLastName(event.target.value)}
-              required
-            />
-            <Input
-              label="Ім'я"
-              value={state.firstName}
-              onChange={(event) => actions.setFirstName(event.target.value)}
-              required
-            />
-            <Input
-              label="По батькові"
-              value={state.patronymic}
-              onChange={(event) => actions.setPatronymic(event.target.value)}
-              wrapperClassName={state.showStatus ? undefined : 'sm:col-span-2'}
-              required
-            />
-            {state.showStatus && (
-              <Select
-                label="Статус"
-                options={state.statusOptions}
-                value={state.status}
-                onChange={(value) => actions.setStatus(value as TeacherStatus)}
-                disabled
+        <ModalScrollBody>
+          {state.isLoadingDetails ? (
+            <p className="py-8 text-center text-text-secondary">Завантаження даних викладача...</p>
+          ) : (
+            <div className="grid gap-4 sm:grid-cols-2">
+              <Input
+                label="Прізвище"
+                value={state.lastName}
+                onChange={(event) => actions.setLastName(event.target.value)}
+                required
               />
-            )}
-            {state.showLoadYear && (
-              <Combobox
-                label="Рік навантаження"
-                value={state.selectedYear}
-                options={state.yearOptions}
-                onChange={(value) => actions.handleYearChange(value)}
-                placeholder="Введіть або оберіть рік..."
+              <Input
+                label="Ім'я"
+                value={state.firstName}
+                onChange={(event) => actions.setFirstName(event.target.value)}
+                required
               />
-            )}
-            <Input
-              label="Годин на рік"
-              type="number"
-              min={1}
-              value={state.hours}
-              onChange={(event) => actions.setHours(event.target.value)}
-              required
-              wrapperClassName={state.showLoadYear ? undefined : 'sm:col-span-2'}
-            />
-          </div>
-        )}
+              <Input
+                label="По батькові"
+                value={state.patronymic}
+                onChange={(event) => actions.setPatronymic(event.target.value)}
+                wrapperClassName={state.showStatus ? undefined : 'sm:col-span-2'}
+                required
+              />
+              {state.showStatus && (
+                <Select
+                  label="Статус"
+                  options={state.statusOptions}
+                  value={state.status}
+                  onChange={(value) => actions.setStatus(value as TeacherStatus)}
+                  disabled
+                />
+              )}
+              {state.showLoadYear && (
+                <Combobox
+                  label="Рік навантаження"
+                  value={state.selectedYear}
+                  options={state.yearOptions}
+                  onChange={(value) => actions.handleYearChange(value)}
+                  placeholder="Введіть або оберіть рік..."
+                />
+              )}
+              <Input
+                label="Годин на рік"
+                type="number"
+                min={1}
+                value={state.hours}
+                onChange={(event) => actions.setHours(event.target.value)}
+                required
+                wrapperClassName={state.showLoadYear ? undefined : 'sm:col-span-2'}
+              />
+            </div>
+          )}
 
-        {state.validationError && <FormErrorMessage message={state.validationError} />}
+          {state.validationError && <FormErrorMessage message={state.validationError} className="mt-4" />}
+        </ModalScrollBody>
 
-        <footer className="flex justify-end gap-3 pt-2">
-          <Button type="button" onClick={onClose} variant="ghost" disabled={isBusy}>
-            Скасувати
-          </Button>
-          <Button
-            type="submit"
-            variant="primary"
-            className="px-8"
-            disabled={isBusy || state.isLoadingDetails}
-          >
-            {state.isLoading ? 'Збереження...' : isEdit ? 'Зберегти' : 'Створити'}
-          </Button>
-        </footer>
+        <ModalFormFooter
+          onCancel={onClose}
+          submitLabel={isEdit ? 'Зберегти' : 'Створити'}
+          loadingLabel="Збереження..."
+          isLoading={state.isLoading}
+          disabled={state.isLoadingDetails}
+        />
       </form>
     </ModalLayout>
   )

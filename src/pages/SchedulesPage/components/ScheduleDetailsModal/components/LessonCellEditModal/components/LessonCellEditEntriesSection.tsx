@@ -1,5 +1,6 @@
 import { Plus } from 'lucide-react'
 import { Button } from '~/ui/Button'
+import { cn } from '~/lib/cn'
 import type { LessonEntryDraft } from '../../../hooks/useLessonCellEdit'
 import { LessonCellEditEntryRow } from './LessonCellEditEntryRow'
 
@@ -27,7 +28,7 @@ export const LessonCellEditEntriesSection = ({
   onUpdateEntry,
   onRemoveEntry,
 }: LessonCellEditEntriesSectionProps) => (
-  <div className="min-h-0 flex-1">
+  <div className={cn('min-h-0 flex-1 overflow-y-auto scrollbar-hidden')}>
     <div className="mb-3 flex items-center justify-between gap-3">
       <h3 className="text-sm font-semibold uppercase tracking-wide text-accent-indigo">
         призначені типи навчань

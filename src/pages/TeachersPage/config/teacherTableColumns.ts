@@ -5,6 +5,7 @@ export type TeacherTableColumnKey =
   | 'displayName'
   | 'status'
   | 'loadHours'
+  | 'availableHours'
   | 'actions'
 
 export type TeacherTableColumn = {
@@ -29,16 +30,21 @@ export const TEACHER_TABLE_COLUMNS: TeacherTableColumn[] = [
     headerClassName: 'min-w-[280px] px-4 py-3 font-semibold',
     cellClassName: 'px-4 py-3 leading-snug',
   },
-  // TODO: увімкнути, коли бекенд підтримує status
-  // {
-  //   key: 'status',
-  //   label: 'Статус',
-  //   headerClassName: 'w-36 whitespace-nowrap px-4 py-3 font-semibold',
-  //   cellClassName: 'whitespace-nowrap px-4 py-3',
-  // },
+  {
+    key: 'status',
+    label: 'Статус',
+    headerClassName: 'w-36 whitespace-nowrap px-4 py-3 font-semibold',
+    cellClassName: 'whitespace-nowrap px-4 py-3',
+  },
   {
     key: 'loadHours',
     label: `Годин на ${currentYear} рік`,
+    headerClassName: 'w-36 whitespace-nowrap px-4 py-3 font-semibold',
+    cellClassName: 'whitespace-nowrap px-4 py-3 tabular-nums',
+  },
+  {
+    key: 'availableHours',
+    label: 'Вільних годин',
     headerClassName: 'w-36 whitespace-nowrap px-4 py-3 font-semibold',
     cellClassName: 'whitespace-nowrap px-4 py-3 tabular-nums',
   },

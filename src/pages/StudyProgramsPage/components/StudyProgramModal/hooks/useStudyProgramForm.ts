@@ -1,10 +1,14 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useSensor, useSensors, PointerSensor, KeyboardSensor } from '@dnd-kit/core'
 import { sortableKeyboardCoordinates, arrayMove } from '@dnd-kit/sortable'
 import type { DragEndEvent } from '@dnd-kit/core'
 import { useToast } from '~/ui/toast/useToast'
 import { getErrorMessage } from '~/lib/formatApiError'
-import { VALIDATION_REQUIRED_FIELDS } from '~/lib/validationMessages'
+import {
+  VALIDATION_DUPLICATE_SUBJECT_IN_PROGRAM,
+  VALIDATION_REQUIRED_FIELDS,
+} from '~/lib/validationMessages'
+import { hasDuplicateSubjectNames } from '~/pages/StudyProgramsPage/utils/studyProgramValidation'
 import { studyProgramsService } from '~/services/studyProgramsService'
 import type { SubjectField } from '../components/SortableSubjectRow'
 
@@ -45,11 +49,22 @@ export const useStudyProgramForm = ({
     programName.trim() !== '' &&
     subjects.every((subject) => subject.name.trim() !== '' && subject.hours > 0)
 
+  const duplicateSubjectError = useMemo(
+    () =>
+      hasDuplicateSubjectNames(subjects) ? VALIDATION_DUPLICATE_SUBJECT_IN_PROGRAM : null,
+    [subjects],
+  )
+
   useEffect(() => {
-    if (isFormValid && validationError) {
+    if (!duplicateSubjectError && validationError === VALIDATION_DUPLICATE_SUBJECT_IN_PROGRAM) {
+      setValidationError(null)
+      return
+    }
+
+    if (isFormValid && validationError === VALIDATION_REQUIRED_FIELDS) {
       setValidationError(null)
     }
-  }, [isFormValid, validationError])
+  }, [duplicateSubjectError, isFormValid, validationError])
 
   useEffect(() => {
     if (!open) return
@@ -123,6 +138,11 @@ export const useStudyProgramForm = ({
   }
 
   const submit = async () => {
+    if (duplicateSubjectError) {
+      setValidationError(duplicateSubjectError)
+      return
+    }
+
     if (!isFormValid) {
       setValidationError(VALIDATION_REQUIRED_FIELDS)
       return
@@ -178,6 +198,7 @@ export const useStudyProgramForm = ({
       isLoading,
       isLoadingDetails,
       validationError,
+      duplicateSubjectError,
       isFormValid,
       sensors,
       mode,

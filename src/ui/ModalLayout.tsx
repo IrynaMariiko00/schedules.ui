@@ -27,9 +27,17 @@ export const ModalLayout = ({
 }: ModalLayoutProps) => {
   if (!open) return null
 
-  const classes = panelClassName?.split(' ') || []
+  const classes = panelClassName?.split(/\s+/).filter(Boolean) ?? []
   const maxWidthClass = classes.find((c) => c.startsWith('max-w-')) || 'max-w-md'
   const otherPanelClasses = classes.filter((c) => !c.startsWith('max-w-')).join(' ')
+  const showScrollbars = classes.includes('scrollbar-visible')
+  const usesInternalScroll = classes.some(
+    (c) =>
+      c === 'modal-form-panel' ||
+      c === 'overflow-hidden' ||
+      c === '!overflow-hidden' ||
+      c.endsWith(':overflow-hidden'),
+  )
 
   return createPortal(
     <div
@@ -61,7 +69,10 @@ export const ModalLayout = ({
           aria-labelledby={labelledBy}
           aria-describedby={describedBy}
           className={cn(
-            'rounded-xl border border-border bg-bg-surface px-6 py-8 shadow-lg max-h-[90vh] w-full overflow-y-auto',
+            'rounded-xl border border-border bg-bg-surface px-6 py-8 shadow-lg max-h-[90vh] w-full',
+            usesInternalScroll ? 'min-h-0 overflow-hidden' : 'overflow-y-auto',
+            !showScrollbars && 'scrollbar-hidden',
+            otherPanelClasses.includes('flex') && 'min-h-0',
             otherPanelClasses,
           )}
         >

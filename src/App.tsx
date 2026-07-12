@@ -4,8 +4,11 @@ import { Header } from '~/layout/Header'
 import SchedulesPage from '~/pages/SchedulesPage/SchedulesPage'
 import StudyProgramsPage from '~/pages/StudyProgramsPage/StudyProgramsPage'
 import TeachersPage from '~/pages/TeachersPage/TeachersPage'
+import { usePageTitle } from '~/hooks/usePageTitle'
 
 export const App = () => {
+  usePageTitle()
+
   return (
     <>
       <Header />
